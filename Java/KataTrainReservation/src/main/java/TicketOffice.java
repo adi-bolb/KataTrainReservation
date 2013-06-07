@@ -2,13 +2,15 @@ package main.java;
 
 public class TicketOffice {
     
-    public TicketOffice(String trainDataService, String bookingReferenceService) {
+    private final IReservationCreator reservationCreator;
+
+	public TicketOffice(String trainDataService, String bookingReferenceService, IReservationCreator reservationCreator) {
+		this.reservationCreator = reservationCreator;
 		//TODO: implement this code!
     }
 
     public Reservation makeReservation(ReservationRequest request) {
-		//TODO: implement this code!
-		return null;
+		return reservationCreator.create();
     }
 
 }

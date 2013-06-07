@@ -2,7 +2,7 @@ package main.java;
 
 import java.util.List;
 
-public class Reservation {
+public class Reservation implements IReservation {
 	public final String trainId;
     public final String bookingId;
     public final List<Seat> seats;
