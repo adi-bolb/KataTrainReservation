@@ -8,45 +8,44 @@ import static org.junit.Assert.*;
 
 public class TicketOfficeTest {
     
-    @Test
-    public void reserveSeats() {
-    	
-    	IReservationCreator reservationCreator = new ReservationCreatorStub();
-    	List<Seat> seats = new ArrayList<Seat>();
-    	seats.add(new Seat(null, 0));
-    	seats.add(new Seat(null, 0));
-    	seats.add(new Seat(null, 0));
-    	seats.add(new Seat(null, 0));
-    	Reservation reservationStubbed = new Reservation(null, seats,  null);
+    private IReservationCreator reservationCreator;
+	private List<Seat> seats;
+	private Reservation reservationStubbed;
+	private TicketOffice office;
+	private ReservationRequest request;
+    @Before
+    public void setup(){
+    	reservationCreator = new ReservationCreatorStub();
+    	seats = new ArrayList<Seat>();
+    	reservationStubbed = new Reservation(null, seats,  null);
     	reservationCreator.setReservation(reservationStubbed);
+    	office = new TicketOffice("http://localhost:8081", "http://localhost:8082", reservationCreator);
+    	request = new ReservationRequest("express_2000", 4);
+    }
+    
+	@Test
+    public void reservationShouldContainCorrectNumberOfSeats() {
+    	seats.add(new Seat(null, 0));
+    	seats.add(new Seat(null, 0));
+    	seats.add(new Seat(null, 0));
+    	seats.add(new Seat(null, 0));
     	
-        TicketOffice office = new TicketOffice("http://localhost:8081", "http://localhost:8082", reservationCreator);
-        ReservationRequest request = new ReservationRequest("express_2000", 4);
-    
         Reservation reservation = office.makeReservation(request);
-    
         assertEquals(4, reservation.seats.size());
 
     }
 
     @Test
-    @Ignore
-    public void reserveSeats2() {
-        TicketOffice office = new TicketOffice("http://localhost:8081", "http://localhost:8082", null);
-        ReservationRequest request = new ReservationRequest("express_2000", 4);
-    
+    public void reservedSeatShouldBeInTheCorrectCoach() {
+    	seats.add(new Seat("A", 0));
+    	
         Reservation reservation = office.makeReservation(request);
-    
         assertEquals("A", reservation.seats.get(0).coach);
-
     }
 
     @Test
     @Ignore
     public void reserveSeats3() {
-        TicketOffice office = new TicketOffice("http://localhost:8081", "http://localhost:8082", null);
-        ReservationRequest request = new ReservationRequest("express_2000", 4);
-    
         Reservation reservation = office.makeReservation(request);
     
         assertEquals("75bcd15", reservation.bookingId);
