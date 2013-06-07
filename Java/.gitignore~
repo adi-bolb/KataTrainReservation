@@ -9,7 +9,6 @@ target/
 .classpath
 .project
 .settings/
-.metadata/
 
 # Mac OS X
 .DS_Store
