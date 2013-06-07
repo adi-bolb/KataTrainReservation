@@ -13,7 +13,8 @@ public class TicketOfficeTest {
 	private Reservation reservationStubbed;
 	private TicketOffice office;
 	private ReservationRequest request;
-    @Before
+    
+	@Before
     public void setup(){
     	reservationCreator = new ReservationCreatorStub();
     	seats = new ArrayList<Seat>();
@@ -29,28 +30,32 @@ public class TicketOfficeTest {
     	seats.add(new Seat(null, 0));
     	seats.add(new Seat(null, 0));
     	seats.add(new Seat(null, 0));
+    	int expectedNumberOfSeats = 4;
     	
         Reservation reservation = office.makeReservation(request);
-        assertEquals(4, reservation.seats.size());
+
+        assertEquals(expectedNumberOfSeats, reservation.seats.size());
 
     }
 
     @Test
     public void reservedSeatShouldBeInTheCorrectCoach() {
-    	seats.add(new Seat("A", 0));
+    	String coach = "A";
+		seats.add(new Seat(coach, 0));
     	
         Reservation reservation = office.makeReservation(request);
-        assertEquals("A", reservation.seats.get(0).coach);
+    
+        assertEquals(coach, reservation.seats.get(0).coach);
     }
 
     @Test
-    public void reserveSeats3() {
-    	String string = "75bcd15";
-    	reservationStubbed = new Reservation(null, null, string);
+    public void reservedSeatShouldHaveTheCorrectBookingId() {
+    	String reservationId = "75bcd15";
+    	reservationStubbed = new Reservation(null, null, reservationId);
     	reservationCreator.setReservation(reservationStubbed);
     	
         Reservation reservation = office.makeReservation(request);
     
-		assertEquals(string, reservation.bookingId);
+		assertEquals(reservationId, reservation.bookingId);
     }
 }
