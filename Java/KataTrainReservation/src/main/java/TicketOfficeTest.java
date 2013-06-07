@@ -44,10 +44,13 @@ public class TicketOfficeTest {
     }
 
     @Test
-    @Ignore
     public void reserveSeats3() {
+    	String string = "75bcd15";
+    	reservationStubbed = new Reservation(null, null, string);
+    	reservationCreator.setReservation(reservationStubbed);
+    	
         Reservation reservation = office.makeReservation(request);
     
-        assertEquals("75bcd15", reservation.bookingId);
+		assertEquals(string, reservation.bookingId);
     }
 }
