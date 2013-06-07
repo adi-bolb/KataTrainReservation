@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 public class TicketOfficeTest {
     
     private IReservationCreator reservationCreator;
-	private List<Seat> seats;
+	private SeatCollectionStub seats;
 	private Reservation reservationStubbed;
 	private TicketOffice office;
 	private ReservationRequest request;
@@ -17,20 +17,18 @@ public class TicketOfficeTest {
 	@Before
     public void setup(){
     	reservationCreator = new ReservationCreatorStub();
-    	seats = new ArrayList<Seat>();
+    	seats = new SeatCollectionStub();
     	reservationStubbed = new Reservation(null, seats,  null);
     	reservationCreator.setReservation(reservationStubbed);
     	office = new TicketOffice("http://localhost:8081", "http://localhost:8082", reservationCreator);
     	request = new ReservationRequest("express_2000", 4);
     }
     
+
 	@Test
     public void reservationShouldContainCorrectNumberOfSeats() {
-    	seats.add(new Seat(null, 0));
-    	seats.add(new Seat(null, 0));
-    	seats.add(new Seat(null, 0));
-    	seats.add(new Seat(null, 0));
-    	int expectedNumberOfSeats = 4;
+		int expectedNumberOfSeats = 4;
+    	seats.setSize(expectedNumberOfSeats);
     	
         Reservation reservation = office.makeReservation(request);
 
@@ -45,7 +43,9 @@ public class TicketOfficeTest {
     	
         Reservation reservation = office.makeReservation(request);
     
-        assertEquals(coach, reservation.seats.get(0).coach);
+        ISeatCollection seats2 = reservation.seats;
+		Seat seat = seats2.get(0);
+		assertEquals(coach, seat.coach);
     }
 
     @Test
@@ -56,6 +56,6 @@ public class TicketOfficeTest {
     	
         Reservation reservation = office.makeReservation(request);
     
-		assertEquals(reservationId, reservation.bookingId);
+		assertEquals(reservationId, reservation.getBookingId());
     }
 }

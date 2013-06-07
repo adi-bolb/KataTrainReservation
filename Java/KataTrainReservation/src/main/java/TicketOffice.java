@@ -6,7 +6,6 @@ public class TicketOffice {
 
 	public TicketOffice(String trainDataService, String bookingReferenceService, IReservationCreator reservationCreator) {
 		this.reservationCreator = reservationCreator;
-		//TODO: implement this code!
     }
 
     public Reservation makeReservation(ReservationRequest request) {
